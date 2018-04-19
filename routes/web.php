@@ -14,3 +14,4 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::resource('shop_categories','Shop_categoriesController');
