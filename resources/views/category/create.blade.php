@@ -1,7 +1,7 @@
 @extends('layout.default')
 @section('title','分类添加')
 @section('content')
-    <form action="{{route('shop_categories.store')}}" method="post" enctype="multipart/form-data">
+    <form action="{{route('businesscategory.store')}}" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="exampleInputEmail1">名称</label>
             <input type="text" class="form-control" name="name" value="{{old('name')}}">
