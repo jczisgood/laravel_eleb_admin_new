@@ -14,15 +14,14 @@
                         <label for="name">用户名：</label>
                         <input type="text" name="name" class="form-control" value="{{ $businessuser->name }}">
                     </div>
-
-                    <div class="form-group">
-                        <label for="password">密码：</label>
-                        <input type="password" name="password" class="form-control" value="{{ $businessuser->password }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">确认密码：</label>
-                        <input type="password" name="password_confirmation" class="form-control" value="{{$businessuser->password }}">
-                    </div>
+                    {{--<div class="form-group">--}}
+                        {{--<label for="password">密码：</label>--}}
+                        {{--<input type="password" name="password" class="form-control" value="{{ $businessuser->password }}">--}}
+                    {{--</div>--}}
+                    {{--<div class="form-group">--}}
+                        {{--<label for="password">确认密码：</label>--}}
+                        {{--<input type="password" name="password_confirmation" class="form-control" value="{{$businessuser->password }}">--}}
+                    {{--</div>--}}
                     <div class="form-group">
                         <label for="password">联系电话：</label>
                         <input type="number" name="phone" class="form-control" value="{{$businessuser->phone }}">
@@ -47,7 +46,8 @@
                         <input id="captcha" class="form-control" name="captcha" >
                         <img class="thumbnail captcha" src="{{ captcha_src('flat') }}" onclick="this.src='/captcha/flat?'+Math.random()" title="点击图片重新获取验证码">
                     </div>
-                    <button type="submit" class="btn btn-primary">登录</button>
+                    <a href="{{route('businessd.show',['businessd'=>$businessuser->user_id])}}" class="btn btn-primary">去详细信息</a>
+                    <button type="submit" class="btn btn-primary">修改</button>
                 </form>
 
                 <hr>

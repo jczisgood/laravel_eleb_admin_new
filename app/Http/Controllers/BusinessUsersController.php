@@ -44,13 +44,13 @@ class BusinessUsersController extends Controller
         ]);
         Businessuser::create([
             'name'=>$request->name,
-            'password'=>$request->password,
+            'password'=>bcrypt($request->password),
             'phone'=>$request->phone,
             'category_id'=>$request->category_id,
             'status'=>1,
         ]);
         session()->flash('success','添加成功');
-        return redirect()->route('businessuers.index');
+        return redirect()->route('businessusers.index');
     }
 
     public function edit(Businessuser $businessuser)
@@ -63,8 +63,42 @@ class BusinessUsersController extends Controller
         return view('business.edit',compact('businessuser','categories'));
     }
 
+    public function update(Request $request,Businessuser $businessuser)
+    {
+        $this->validate($request,[
+            'name'=>'required|min:2|max:20',
+            'cover'=>'image',
+            'phone'=>'required|max:11|min:11',
+        ],[
+            'name.required'=>'姓名不能为空',
+            'name.min'=>'姓名长度至少2位',
+            'name.max'=>'姓名长度不能超过20位',
+            'phone.required'=>'手机不能为空',
+            'phone.max'=>'手机号格式错误',
+            'phone.min'=>'手机号格式错误',
+        ]);
+        $businessuser->update([
+            'name'=>$request->name,
+            'phone'=>$request->phone,
+            'category_id'=>$request->category_id,
+            'status'=>$request->status,
+        ]);
+        session()->flash('success','修改成功');
+        return redirect()->route('businessusers.index');
+    }
     public function destroy(Businessuser $businessuser)
     {
         $businessuser->delete();
+    }
+
+    public function check(Businessuser $businessuser)
+    {
+//        dd($businessuser->status);
+        $res=$businessuser->status==0?1:0;
+    $businessuser->update([
+        'status'=>$res
+        ]);
+        session()->flash('success','审核通过');
+        return redirect()->route('businessusers.index');
     }
 }

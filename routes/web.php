@@ -19,3 +19,10 @@ Route::resource('businesscategory','BusinessCategoryController');
 //商家信息
 Route::resource('businessusers','BusinessUsersController');
 Route::resource('businessd','BusinessDetailsController');
+Route::resource('admin','AdminsController');
+Route::get('login','LoginController@index')->name('login');
+Route::post('login','LoginController@store')->name('login');
+Route::get('logout','LoginController@destroy')->name('logout');
+Route::get('form/{admin}','CheckController@show')->name('form');
+Route::post('update/{admin}','CheckController@update')->name('check.update');
+Route::get('status/{businessuser}/check','BusinessUsersController@check')->name('status.check');
