@@ -10,7 +10,7 @@ class LoginController extends Controller
     //
     public function index()
     {
-
+//        dd(bcrypt('123456'));
         return view('login.index');
     }
 

@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 Route::resource('businesscategory','BusinessCategoryController');
 //Route::resource('shop_categories','Shop_categoriesController');
 //商家信息
@@ -26,3 +26,6 @@ Route::get('logout','LoginController@destroy')->name('logout');
 Route::get('form/{admin}','CheckController@show')->name('form');
 Route::post('update/{admin}','CheckController@update')->name('check.update');
 Route::get('status/{businessuser}/check','BusinessUsersController@check')->name('status.check');
+Route::get('status/{businessuser}/check','BusinessUsersController@check')->name('status.check');
+Route::resource('activity','ActivityController');
+Route::post('/set','PicController@create');

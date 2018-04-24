@@ -44,12 +44,10 @@ class BusinessDetailsController extends Controller
     public function update(Request $request,BusinessDetail $businessd)
     {
         $this->validate($request,[
-            'shop_img'=>'image',
             'start_send'=>'required|numeric',
             'send_cost'=>'required|numeric',
             'estimate_time'=>'required|numeric',
         ],[
-            'shop_img.image'=>'图片必须为jpeg、png、bmp、gif、或 svg!',
             'start_send.required'=>'起送金额必填!',
             'start_send.numeric'=>'起送金额必须为数字!',
             'send_cost.numeric'=>'配送费用必须是数字!',
@@ -58,11 +56,10 @@ class BusinessDetailsController extends Controller
             'estimate_time.numeric'=>'最迟配送时间必需是数字!',
         ]);
         $cover=$businessd->shop_img;
-        if ($request->file('shop_img')!=null){
-            $res=$request->file('shop_img')->store('public/storage');
-        $cover=url(Storage::url($res));
+        if ($request->shop_img!=null){
+            $cover=$request->shop_img;
         }
-//        dd($cover);
+
         $businessd->update([
             'shop_img'=>$cover,
             'brand'=>$request->brand??0,

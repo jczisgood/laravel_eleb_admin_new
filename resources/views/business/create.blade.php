@@ -41,7 +41,7 @@
                         <input id="captcha" class="form-control" name="captcha" >
                         <img class="thumbnail captcha" src="{{ captcha_src('flat') }}" onclick="this.src='/captcha/flat?'+Math.random()" title="点击图片重新获取验证码">
                     </div>
-                    <button type="submit" class="btn btn-primary">登录</button>
+                    <button type="submit" class="btn btn-primary">注册</button>
                 </form>
 
                 <hr>

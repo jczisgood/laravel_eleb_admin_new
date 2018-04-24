@@ -39,6 +39,6 @@ class CheckController extends Controller
                'email'=>$request->email,
            ]);
            session()->flash('success','修改成功');
-            return redirect()->route('logout');
+            return redirect()->route('logout')->with('success','修改密码成功,你需要重新登录');
     }
 }

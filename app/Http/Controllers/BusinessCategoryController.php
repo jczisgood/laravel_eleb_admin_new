@@ -26,23 +26,24 @@ class BusinessCategoryController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|min:2',
-            'cover' => 'image',
         ], [
             'name,required' => '分类名称不能为空',
             'name,min' => '分类名称不能少于两位',
-            'cover.image' => '请选择其他头像',
         ]);
         $cover = '';
 //        dd($request->file('cover'));die;
-        if ($request->file('cover') != null) {
+        if ($request->cover!= null) {
 //            die;
-            $res= $request->file('cover')->store('public/storage');
-            $cover=Storage::url($res);
+//            $res= $request->file('cover')->store('public/storage');
+//            $cover=Storage::url($res);
+            $cover=$request->cover;
         }
-        BusinessCategory::create([
-            'name'=>$request->name,
-            'cover'=>$cover,
-        ]);
+        $businesscategory=new BusinessCategory();
+
+
+        $businesscategory->name=$request->name;
+            $businesscategory->cover=$cover;
+        $businesscategory->save();
         session()->flash('success','添加分类成功');
         return redirect()->route('businesscategory.index');
     }
@@ -60,18 +61,17 @@ class BusinessCategoryController extends Controller
 //        echo 1;die;
         $this->validate($request, [
             'name' => 'required|min:2',
-            'cover' => 'image',
+//            'cover' => 'image',
         ], [
             'name,required' => '分类名称不能为空',
             'name,min' => '分类名称不能少于两位',
-            'cover.image' => '请选择其他头像',
+//            'cover.image' => '请选择其他头像',
         ]);
         $cover = $businesscategory->cover;
-//        dd($request->file('cover'));die;
-        if ($request->file('cover') != null) {
+//        dd($request->cover);die;
+        if ($request->cover != null) {
 //            die;
-            $res= $request->file('cover')->store('public/storage');
-            $cover=Storage::url($res);
+            $cover= $request->cover;
         }
         $businesscategory->update([
             'name'=>$request->name,

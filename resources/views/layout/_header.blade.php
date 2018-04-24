@@ -19,6 +19,7 @@
                 <li class="active"><a href="{{route('businesscategory.index')}}">商家分类 <span class="sr-only">(current)</span></a></li>
                 <li><a href="{{route('businessusers.index')}}">添加商家</a></li>
                 <li><a href="{{route('admin.index')}}">管理员管理</a></li>
+                <li><a href="{{route('activity.index')}}">活动管理</a></li>
                 <li class="dropdown">
                     <a href="#" class="" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">access <span class="caret"></span></a>
                     <ul class="dropdown-menu">

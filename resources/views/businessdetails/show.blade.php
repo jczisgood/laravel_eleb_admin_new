@@ -9,7 +9,7 @@
                     <div class="col-sm-1"></div>
                     <div class="col-sm-10" style="position: relative;">
                         <ul class="list-group">
-                            <li>店铺LOGO:<img style="position: absolute;right: 0;" src="{{$businessd->shop_img}}" alt="" width="200px"></li>
+                            <li>店铺LOGO:<img style="position: absolute;right: 0;" src="{{$businessd->shop_img}}" alt=""></li>
                             <li>店铺评分:&emsp;{{$businessd->shop_rating}}</li>
                             <li>是否品牌:&emsp;{{$businessd->brand==0?'否':'是'}}</li>
                             <li>是否准时:&emsp;{{$businessd->on_time==0?'否':'是'}}</li>

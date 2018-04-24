@@ -1,6 +1,7 @@
 @extends('layout.default')
-@section('title','注册店铺')
+@section('title','店铺添加')
 @section('content')
+    <link rel="stylesheet" type="text/css" href="/webuploader/webuploader.css">
     <div class="row">
         <div class="col-lg-2"></div>
         <div class="container col-lg-9" style="background-color: #eceeee">
@@ -41,11 +42,15 @@
                         @endforeach
                     </select>
                 </div>
-
-                <div class="form-group">
-                    <label>店铺图片</label>
-                    <input  type="file"  name="shop_img"/>
+                <div id="uploader-demo">
+                    <!--用来存放item-->
+                    <div id="fileList" class="uploader-list"></div>
+                    <div id="filePicker">店铺LOGO</div>
                 </div>
+                <div>
+                    <img src="" id="img" alt="" width="100px">
+                </div>
+                <input type="hidden" name="cover" value="" id="hidden">
                 <div class="form-group">
                     <label>店铺地址</label>
                     <input type="text" class="form-control" name="address" value="{{old('address')}}" >
@@ -120,8 +125,43 @@
                     <img class="thumbnail captcha" src="{{ captcha_src('flat') }}" onclick="this.src='/captcha/flat?'+Math.random()" title="点击图片重新获取验证码">
                 </div>
                 {{csrf_field()}}
-                <button type="submit" class="btn btn-primary btn-success">注册</button>
+                <button type="submit" class="btn btn-primary btn-success">添加</button>
             </form>
         </div>
     </div>
+@stop
+@section('js')
+    <!--引入JS-->
+    <script type="text/javascript" src="/webuploader/webuploader.js"></script>
+    <script>
+        // 初始化Web Uploader
+        var uploader = WebUploader.create({
+
+            // 选完文件后，是否自动上传。
+            auto: true,
+
+            // swf文件路径
+            swf: '/webuploader/Uploader.swf',
+
+            // 文件接收服务端。
+            server: '/set',
+
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: '#filePicker',
+            formData: {'_token':'{{ csrf_token() }}'},
+            // 只允许选择图片文件。
+            accept: {
+                title: 'Images',
+                extensions: 'gif,jpg,jpeg,bmp,png',
+                mimeTypes: 'image/*'
+            }
+        });
+        uploader.on( 'uploadSuccess', function( file,response  ) {
+//            $( '#'+file.id ).find('p.state').text('已上传');
+
+            $('#img').attr('src',response.file);
+            $('#hidden').val(response.file)
+        });
+    </script>
 @stop

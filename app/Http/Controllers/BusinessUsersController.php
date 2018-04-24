@@ -6,6 +6,7 @@ use App\Business;
 use App\BusinessCategory;
 use App\Businessuser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class BusinessUsersController extends Controller
@@ -28,7 +29,6 @@ class BusinessUsersController extends Controller
         $this->validate($request,[
             'name'=>'required|min:2|max:20',
             'password'=>'required|min:6|max:18|confirmed',
-            'cover'=>'image',
             'phone'=>'required|max:11|min:11',
         ],[
             'name.required'=>'姓名不能为空',
@@ -42,13 +42,20 @@ class BusinessUsersController extends Controller
             'phone.max'=>'手机号格式错误',
             'phone.min'=>'手机号格式错误',
         ]);
-        Businessuser::create([
-            'name'=>$request->name,
-            'password'=>bcrypt($request->password),
-            'phone'=>$request->phone,
-            'category_id'=>$request->category_id,
-            'status'=>1,
-        ]);
+        DB::transaction(function ()use($request){
+            DB::table('business_details')->insert([
+                'shop_name'=>$request->name,
+            ]);
+            $bd=DB::getPdo()->lastInsertId();
+            Businessuser::create([
+                'name'=>$request->name,
+                'password'=>bcrypt($request->password),
+                'phone'=>$request->phone,
+                'category_id'=>$request->category_id,
+                'status'=>1,
+                'user_id'=>$bd
+            ]);
+        });
         session()->flash('success','添加成功');
         return redirect()->route('businessusers.index');
     }
@@ -67,7 +74,6 @@ class BusinessUsersController extends Controller
     {
         $this->validate($request,[
             'name'=>'required|min:2|max:20',
-            'cover'=>'image',
             'phone'=>'required|max:11|min:11',
         ],[
             'name.required'=>'姓名不能为空',
