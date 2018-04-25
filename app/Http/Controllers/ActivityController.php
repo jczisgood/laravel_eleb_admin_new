@@ -26,7 +26,7 @@ class ActivityController extends Controller
 //        dd($request->contents);
         $this->validate($request,[
             'title'=>'required',
-            'contents'=>'required|min:10|max:50',
+            'contents'=>'required|min:10',
             'start_time'=>'required',
             'end_time'=>'required',
             'captcha'=>'required|captcha'
@@ -34,7 +34,6 @@ class ActivityController extends Controller
             'title.required'=>'活动标题必填',
             'contents.required'=>'活动内容必填',
             'contents.min'=>'活动内容不能少于十位',
-            'contents.max'=>'活动内容不能大于50位',
             'start_time.required'=>'开始时间必填',
             'end_time.required'=>'结束时间必填',
             'captcha.required'=>'请填写验证码',
@@ -63,14 +62,13 @@ class ActivityController extends Controller
     {
         $this->validate($request,[
             'title'=>'required',
-            'contents'=>'required|min:10|max:50',
+            'contents'=>'required|min:10',
             'start_time'=>'required',
             'end_time'=>'required',
         ],[
             'title.required'=>'活动标题必填',
             'contents.required'=>'活动内容必填',
             'contents.min'=>'活动内容不能少于十位',
-            'contents.max'=>'活动内容不能大于50位',
             'start_time.required'=>'开始时间必填',
             'end_time.required'=>'结束时间必填',
         ]);
