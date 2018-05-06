@@ -7,13 +7,16 @@
             <input type="text" class="form-control" name="username" value="{{$admin->username}}">
         </div>
         <div class="form-group">
-            <label for="exampleInputPassword1">密码</label>
-            <input type="password" class="form-control" name="password" value="{{$admin->password}}">
-        </div>
-        <div class="form-group">
             <label for="exampleInputPassword1">邮箱</label>
             <input type="email" class="form-control" name="email" value="{{$admin->email}}">
         </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">权限</label>
+            @foreach($roles as $row)
+                <label><input type="checkbox" name="role_id[]" value="{{$row->id}}"  {{$admin->hasRole($row->name)?'checked':''}} class="form-control-static">{{$row->display_name}}&emsp;</label>
+            @endforeach
+        </div>
+        {{method_field('PUT')}}
         {{csrf_field()}}
         <button type="submit" class="btn btn-default">提交</button>
     </form>

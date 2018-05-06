@@ -8,11 +8,17 @@ use App\Businessuser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rule;
 
 class BusinessUsersController extends Controller
 {
     public function index(Request $request)
     {
+        if(!Auth::user()->can('businessusers.index')){
+            return 'sorry,you can\'t visited this web';
+        }
+
         $name=$request->keywords;
         $businessusers=Businessuser::where('name','like',"%$name%")->paginate(3);
         return view('business.index',compact('name','businessusers'));
@@ -20,6 +26,9 @@ class BusinessUsersController extends Controller
 
     public function create()
     {
+        if(!Auth::user()->can('businessusers.index')){
+            return 'sorry,you can\'t visited this web';
+        }
         $categories= BusinessCategory::all()->pluck('id','name');
         return view('business.create',compact('categories'));
     }
@@ -29,7 +38,7 @@ class BusinessUsersController extends Controller
         $this->validate($request,[
             'name'=>'required|min:2|max:20',
             'password'=>'required|min:6|max:18|confirmed',
-            'phone'=>'required|max:11|min:11',
+            'email'=>'required|email|unique:businessusers',
         ],[
             'name.required'=>'姓名不能为空',
             'name.min'=>'姓名长度至少2位',
@@ -38,9 +47,9 @@ class BusinessUsersController extends Controller
             'password.min'=>'密码长度不能少于6位',
             'password.max'=>'密码长度不能大于18位',
             'password.confirmed'=>'确认密码与密码不一致',
-            'phone.required'=>'手机不能为空',
-            'phone.max'=>'手机号格式错误',
-            'phone.min'=>'手机号格式错误',
+            'email.required'=>'邮箱不能为空',
+            'email.email'=>'邮箱格式错误',
+            'email.unique'=>'邮箱已存在',
         ]);
         DB::transaction(function ()use($request){
             DB::table('business_details')->insert([
@@ -50,7 +59,7 @@ class BusinessUsersController extends Controller
             Businessuser::create([
                 'name'=>$request->name,
                 'password'=>bcrypt($request->password),
-                'phone'=>$request->phone,
+                'email'=>$request->email,
                 'category_id'=>$request->category_id,
                 'status'=>1,
                 'user_id'=>$bd
@@ -62,6 +71,9 @@ class BusinessUsersController extends Controller
 
     public function edit(Businessuser $businessuser)
     {
+        if(!Auth::user()->can('businessusers.edit')){
+            return 'sorry,you can\'t visited this web';
+        }
 
 //        dd($businessuser->id);
 //        dd($businessuser);
@@ -72,20 +84,24 @@ class BusinessUsersController extends Controller
 
     public function update(Request $request,Businessuser $businessuser)
     {
+
         $this->validate($request,[
             'name'=>'required|min:2|max:20',
-            'phone'=>'required|max:11|min:11',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('businessusers')->ignore($businessuser->id)],
         ],[
             'name.required'=>'姓名不能为空',
             'name.min'=>'姓名长度至少2位',
             'name.max'=>'姓名长度不能超过20位',
-            'phone.required'=>'手机不能为空',
-            'phone.max'=>'手机号格式错误',
-            'phone.min'=>'手机号格式错误',
+            'email.required'=>'邮箱必须填写',
+            'email.email'=>'邮箱格式错误',
+            'email.unique'=>'邮箱已经存在',
         ]);
         $businessuser->update([
             'name'=>$request->name,
-            'phone'=>$request->phone,
+            'email'=>$request->email,
             'category_id'=>$request->category_id,
             'status'=>$request->status,
         ]);
@@ -99,12 +115,25 @@ class BusinessUsersController extends Controller
 
     public function check(Businessuser $businessuser)
     {
+
 //        dd($businessuser->status);
         $res=$businessuser->status==0?1:0;
     $businessuser->update([
         'status'=>$res
         ]);
-        session()->flash('success','审核通过');
+    $message=$res==1?'审核通过':'审核拒绝';
+        $email=$businessuser->email;
+        Mail::send(
+            'business.email',//邮件视图模板
+            ['name'=>$businessuser->name,
+                'status'=>$things=$res?'完成通过':'拒绝通过',
+                'messagea'=>$things=$res?'祝你生意兴隆,大吉大利':'希望你加以改进'],
+            function ($message)use($email){
+                $message->to($email)->subject('订单确认');
+//                dd($email);
+            }
+        );
+        session()->flash('success',$message);
         return redirect()->route('businessusers.index');
     }
 }

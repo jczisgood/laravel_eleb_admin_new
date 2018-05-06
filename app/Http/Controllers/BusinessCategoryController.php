@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\BusinessCategory;
 //use App\Businessuser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class BusinessCategoryController extends Controller
@@ -12,18 +13,27 @@ class BusinessCategoryController extends Controller
     //
     public function index(Request $request)
     {
+        if(!Auth::user()->can('category.index')){
+            return 'sorry,you can\'t visited this web';
+        }
+
         $name=$request->keywords;
         $BusinessCategorys= BusinessCategory::where('name','like',"%$name%")->paginate(3);
         return view('category.index',compact('BusinessCategorys','name'));
     }
 
     public function create()
-    {
+    {if(!Auth::user()->can('category.create')){
+        return 'sorry,you can\'t visited this web';
+    }
+
         return view('category.create');
     }
 
     public function store(Request $request)
     {
+
+
         $this->validate($request, [
             'name' => 'required|min:2',
         ], [
@@ -50,6 +60,9 @@ class BusinessCategoryController extends Controller
 
     public function edit(BusinessCategory $businesscategory)
     {
+        if(!Auth::user()->can('category.edit')){
+            return 'sorry,you can\'t visited this web';
+        }
 //        die;
 //        dd($businesscategory->id);
 //        $shop_categories=$businessCategory;
@@ -83,6 +96,10 @@ class BusinessCategoryController extends Controller
 
     public function destroy(BusinessCategory $businesscategory)
     {
+        if(!Auth::user()->can('category.destroy')){
+            return 'sorry,you can\'t visited this web';
+        }
+
         $businesscategory->delete();
     }
 }

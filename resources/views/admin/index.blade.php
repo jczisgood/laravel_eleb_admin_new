@@ -25,37 +25,36 @@
                 <td>{{$admin->username}}</td>
                 <td>{{$admin->email}}</td>
                 <td>
+                    @if(\Illuminate\Support\Facades\Auth::user()->can('admin.edit'))
                         <a href="{{route('admin.edit',$admin->id)}}" class="btn btn-danger">编辑</a>
-                        <a href="" class="btn btn-default">删除</a>
+                       @endif
+                        @if(\Illuminate\Support\Facades\Auth::user()->can('admin.destroy'))
+                        <button class="btn btn-default">删除</button>
+                        @endif
                     {{--@endif--}}
                 </td>
             </tr>
         @endforeach
-        <tr>
-            <td colspan="4">
-                <a href="{{route('businesscategory.create')}}">添加</a>
-            </td>
-        </tr>
     </table>
     {{$admins->appends($name)->links()}}
 @stop
 @section('js')
     <script>
-
         $('#mytable .btn-default').click(function () {
-//            confirm('nihao');
-            var tr=$(this).closest('tr');
-            var id=tr.data('id');
+            if(confirm('确定删除这条数据吗?')){
+                var tr=$(this).closest('tr');
+                var id=tr.data('id');
 //            confirm(id);
-            $.ajax({
-                url:'businesscategory/'+id,
-                data:'_token={{csrf_token()}}',
-                type:'DELETE',
-                session:function (msg) {
-                    tr.remove();
-                }
-            })
-            return false;
+                $.ajax({
+                    url:'admin/'+id,
+                    data:'_token={{csrf_token()}}',
+                    type:'DELETE',
+                    success:function () {
+                        tr.remove();
+                    }
+                })
+            }
+
         })
         //
     </script>

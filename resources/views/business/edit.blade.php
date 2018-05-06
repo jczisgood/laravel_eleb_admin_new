@@ -23,8 +23,8 @@
                         {{--<input type="password" name="password_confirmation" class="form-control" value="{{$businessuser->password }}">--}}
                     {{--</div>--}}
                     <div class="form-group">
-                        <label for="password">联系电话：</label>
-                        <input type="number" name="phone" class="form-control" value="{{$businessuser->phone }}">
+                        <label for="password">邮箱：</label>
+                        <input type="email" name="email" class="form-control" value="{{$businessuser->email }}">
                     </div>
                     <div class="form-group">
                         <label for="password">审核状态：</label>

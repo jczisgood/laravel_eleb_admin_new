@@ -8,7 +8,7 @@ class Businessuser extends Model
 {
     //
     protected $fillable=[
-        'phone','name','password','category_id','status','user_id'
+        'email','name','password','category_id','status','user_id'
     ];
     public function category()
     {

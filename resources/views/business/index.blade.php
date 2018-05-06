@@ -15,7 +15,7 @@
     <table class="table table-hover" id="mytable">
         <tr>
             <th>ID</th>
-            <th>手机号码</th>
+            <th>邮箱</th>
             <th>用户名</th>
             <th>分类</th>
             <th>审核</th>
@@ -24,14 +24,20 @@
         @foreach($businessusers as $businessuser)
             <tr data-id="{{$businessuser->id}}" id="article">
                 <td>{{$businessuser->id}}</td>
-                <td>{{$businessuser->phone}}</td>
+                <td>{{$businessuser->email}}</td>
                 <td>{{$businessuser->name}}</td>
                 <td>{{$businessuser->category->name}}</td>
                 <td>{{$businessuser->status==0?'未通过':'通过'}}</td>
                 <td>
+                    @if(\Illuminate\Support\Facades\Auth::user()->can('businessusers.edit'))
                     <a href="{{route('businessusers.edit',$businessuser->id)}}" class="btn btn-danger">编辑</a>
+                    @endif
+                    @if(\Illuminate\Support\Facades\Auth::user()->can('status.check'))
                     <a href="{{route('status.check',$businessuser->id)}}" class="btn btn-danger">{{$businessuser->status==0?'同意':'拒绝'}}</a>
-                    <a href="" class="btn btn-default">删除</a>
+                    @endif
+                        @if(\Illuminate\Support\Facades\Auth::user()->can('businessusers.destroy'))
+                            <a href="" class="btn btn-default">删除</a>
+                        @endif
                     {{--@endif--}}
                 </td>
             </tr>
@@ -48,7 +54,7 @@
                 url:'businessusers/'+id,
                 data:'_token={{csrf_token()}}',
                 type:'DELETE',
-                session:function (msg) {
+                success:function (msg) {
                     tr.remove();
                 }
             })
