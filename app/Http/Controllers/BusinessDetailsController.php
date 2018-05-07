@@ -6,13 +6,21 @@ use App\BusinessCategory;
 use App\BusinessDetail;
 use App\Businessuser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class BusinessDetailsController extends Controller
 {
     //
+    public function __construct()
+    {
+        $this->middleware('auth',[
+        ]);
+    }
+    //
     public function index(Request $request)
     {
+
 //        dd($businessdetail->id);
 //        $name=$request->keywords;
 //        $businessdetails= BusinessDetail::where('shop_name','like',"%$name%")->paginate(3);
@@ -20,6 +28,9 @@ class BusinessDetailsController extends Controller
     }
     public function create()
     {
+        if(!Auth::user()->can('businessd.create')){
+            return 'sorry,you can\'t visited this web';
+        }
         $categories=BusinessCategory::all()->pluck('name','id');
         return view('businessdetails.create',compact('categories'));
     }
@@ -31,6 +42,9 @@ class BusinessDetailsController extends Controller
 
     public function show(BusinessDetail $businessd)
     {
+        if(!Auth::user()->can('businessd.show')){
+            return 'sorry,you can\'t visited this web';
+        }
 //        dd(BusinessDetail::all());
 //        dd($businessd);
         return view('businessdetails.show',compact('businessd'));
@@ -38,11 +52,18 @@ class BusinessDetailsController extends Controller
 
     public function edit(BusinessDetail $businessd)
     {
+        if(!Auth::user()->can(' businessd.edit')){
+            return 'sorry,you can\'t visited this web';
+        }
+
         return view('businessdetails.edit',compact('businessd'));
     }
 
     public function update(Request $request,BusinessDetail $businessd)
     {
+        if(!Auth::user()->can(' businessd.edit')){
+            return 'sorry,you can\'t visited this web';
+        }
         $this->validate($request,[
             'start_send'=>'required|numeric',
             'send_cost'=>'required|numeric',

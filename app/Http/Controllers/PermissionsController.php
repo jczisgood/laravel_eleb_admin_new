@@ -8,12 +8,18 @@ use Illuminate\Validation\Rule;
 
 class PermissionsController extends Controller
 {
+    //
+    public function __construct()
+    {
+        $this->middleware('auth',[
+        ]);
+    }
     //权限首页
     public function index(Request $request)
     {
         //得到所有数据
         $name=$request->keywords;
-        $permissions= Permission::where('description','like',"%$name%")->paginate(3);
+        $permissions= Permission::where('name','like',"%$name%")->paginate(3);
         return view('permission.index',compact('permissions','name'));
     }
 

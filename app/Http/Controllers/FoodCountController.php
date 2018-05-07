@@ -7,6 +7,12 @@ use Illuminate\Support\Facades\DB;
 
 class FoodCountController extends Controller
 {
+    //
+    public function __construct()
+    {
+        $this->middleware('auth',[
+        ]);
+    }
     //统计
     public function index()
     {

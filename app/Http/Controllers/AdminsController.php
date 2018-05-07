@@ -5,13 +5,23 @@ namespace App\Http\Controllers;
 use App\admin;
 use App\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class AdminsController extends Controller
 {
     //
+    public function __construct()
+    {
+        $this->middleware('auth',[
+        ]);
+    }
+    //
     public function index(Request $request)
     {
+        if(!Auth::user()->can('admin.create')){
+            return 'sorry,you can\'t visited this web';
+        }
         $name=$request->keywords;
         $admins=admin::where('username','like',"%$name%")->paginate(3);
         return view('admin.index',compact('name','admins'));
@@ -19,12 +29,17 @@ class AdminsController extends Controller
 
     public function create(admin $admin)
     {
+        if(!Auth::user()->can('admin.create')){
+            return 'sorry,you can\'t visited this web';
+        }
         $roles=Role::all();
         return view('admin.create',compact('admin','roles'));
     }
 
     public function store(Request $request)
-    {
+    {if(!Auth::user()->can('category.create')){
+        return 'sorry,you can\'t visited this web';
+    }
         $this->validate($request,[
             'username'=>'required|min:5|max:18',
             'password'=>'required|min:6|max:18',
@@ -53,7 +68,9 @@ class AdminsController extends Controller
     }
 
     public function edit(admin $admin)
-    {
+    {if(!Auth::user()->can('admin.edit')){
+        return 'sorry,you can\'t visited this web';
+    }
         $roles=Role::all();
         return view('admin.edit',compact('admin','roles'));
     }
@@ -85,6 +102,9 @@ class AdminsController extends Controller
 
     public function destroy(admin $admin)
     {
+        if(!Auth::user()->can('admin.destroy')){
+            return 'sorry,you can\'t visited this web';
+        }
         $admin->delete();
         $admin->syncRoles([]);
     }

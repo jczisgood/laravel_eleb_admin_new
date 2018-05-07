@@ -13,8 +13,17 @@ use Illuminate\Validation\Rule;
 
 class BusinessUsersController extends Controller
 {
+    //
+    public function __construct()
+    {
+        $this->middleware('auth',[
+        ]);
+    }
     public function index(Request $request)
     {
+        if(!Auth::user()->can('businessusers.index')){
+        return 'sorry,you can\'t visited this web';
+    }
         if(!Auth::user()->can('businessusers.index')){
             return 'sorry,you can\'t visited this web';
         }
@@ -26,6 +35,9 @@ class BusinessUsersController extends Controller
 
     public function create()
     {
+        if(!Auth::user()->can('businessusers.create')){
+            return 'sorry,you can\'t visited this web';
+        }
         if(!Auth::user()->can('businessusers.index')){
             return 'sorry,you can\'t visited this web';
         }
@@ -35,6 +47,9 @@ class BusinessUsersController extends Controller
 
     public function store(Request $request)
     {
+        if(!Auth::user()->can('businessusers.create')){
+            return 'sorry,you can\'t visited this web';
+        }
         $this->validate($request,[
             'name'=>'required|min:2|max:20',
             'password'=>'required|min:6|max:18|confirmed',
@@ -74,6 +89,9 @@ class BusinessUsersController extends Controller
         if(!Auth::user()->can('businessusers.edit')){
             return 'sorry,you can\'t visited this web';
         }
+        if(!Auth::user()->can('businessusers.edit')){
+            return 'sorry,you can\'t visited this web';
+        }
 
 //        dd($businessuser->id);
 //        dd($businessuser);
@@ -84,7 +102,9 @@ class BusinessUsersController extends Controller
 
     public function update(Request $request,Businessuser $businessuser)
     {
-
+        if(!Auth::user()->can('businessusers.index')){
+            return 'sorry,you can\'t visited this web';
+        }
         $this->validate($request,[
             'name'=>'required|min:2|max:20',
             'email' => [
@@ -110,12 +130,15 @@ class BusinessUsersController extends Controller
     }
     public function destroy(Businessuser $businessuser)
     {
+        if(!Auth::user()->can('businessusers.destroy')){
+            return 'sorry,you can\'t visited this web';
+        }
         $businessuser->delete();
     }
 
     public function check(Businessuser $businessuser)
     {
-
+//dd(1);
 //        dd($businessuser->status);
         $res=$businessuser->status==0?1:0;
     $businessuser->update([

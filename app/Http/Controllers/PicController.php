@@ -9,6 +9,12 @@ use OSS\Core\OssException;
 class PicController extends Controller
 {
     //
+    public function __construct()
+    {
+        $this->middleware('auth',[
+        ]);
+    }
+    //
     public function create(Request $request)
     {
         $img_pa=$request->file('file')->store('public/date'.date('md'));

@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\DB;
 
 class MenuController extends Controller
 {
+    //
+    public function __construct()
+    {
+        $this->middleware('auth',[
+        ]);
+    }
     protected function getChildren($list,$parent_id=0,$deep=0){
         static $children = [];
         foreach ($list as $child){

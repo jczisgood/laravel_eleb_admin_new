@@ -11,9 +11,15 @@ use Illuminate\Support\Facades\Storage;
 class BusinessCategoryController extends Controller
 {
     //
+    public function __construct()
+    {
+        $this->middleware('auth',[
+        ]);
+    }
+    //
     public function index(Request $request)
     {
-        if(!Auth::user()->can('category.index')){
+        if(!Auth::user()->can('businesscategory.index')){
             return 'sorry,you can\'t visited this web';
         }
 
@@ -23,7 +29,7 @@ class BusinessCategoryController extends Controller
     }
 
     public function create()
-    {if(!Auth::user()->can('category.create')){
+    {if(!Auth::user()->can('businesscategory.create')){
         return 'sorry,you can\'t visited this web';
     }
 
@@ -32,7 +38,9 @@ class BusinessCategoryController extends Controller
 
     public function store(Request $request)
     {
-
+        if(!Auth::user()->can('businesscategory.create')){
+            return 'sorry,you can\'t visited this web';
+        }
 
         $this->validate($request, [
             'name' => 'required|min:2',
@@ -60,7 +68,7 @@ class BusinessCategoryController extends Controller
 
     public function edit(BusinessCategory $businesscategory)
     {
-        if(!Auth::user()->can('category.edit')){
+        if(!Auth::user()->can('businesscategory.edit')){
             return 'sorry,you can\'t visited this web';
         }
 //        die;
@@ -71,6 +79,9 @@ class BusinessCategoryController extends Controller
 
     public function update(Request $request,BusinessCategory $businesscategory)
     {
+        if(!Auth::user()->can('businesscategory.edit')){
+            return 'sorry,you can\'t visited this web';
+        }
 //        echo 1;die;
         $this->validate($request, [
             'name' => 'required|min:2',
@@ -96,7 +107,7 @@ class BusinessCategoryController extends Controller
 
     public function destroy(BusinessCategory $businesscategory)
     {
-        if(!Auth::user()->can('category.destroy')){
+        if(!Auth::user()->can('businesscategory.destroy')){
             return 'sorry,you can\'t visited this web';
         }
 
