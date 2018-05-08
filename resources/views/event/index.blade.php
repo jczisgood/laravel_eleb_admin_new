@@ -35,8 +35,10 @@
                 <td>
                     <a href="{{route('event.show',$event->id)}}" class="btn btn-info">查看</a>
                     <a href="{{route('event.edit',$event->id)}}" class="btn btn-danger">修改</a>
+                    @if(!$event->is_prize)
                     <a href="{{route('event.take',$event->id)}}" class="btn btn-success">抽奖</a>
-                    <a href="{{route('event.showgoods',$event->id)}}" class="btn btn-info">查看奖品</a>
+                    @endif
+                        <a href="{{route('event.showgoods',$event->id)}}" class="btn btn-info">查看奖品</a>
                     <a href="{{route('event.see',$event->id)}}" class="btn btn-info">查看中奖名单</a>
                     <button class="btn btn-primary">删除</button>
                 </td>

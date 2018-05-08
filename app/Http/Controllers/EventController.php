@@ -125,6 +125,9 @@ class EventController extends Controller
 //            $good=$join_man->pop();
 //        }
         //判断
+        if ($event->is_prize){
+            return redirect()->route('event.index')->with('success','抽奖失败,因为已经完成抽奖');
+        }
             if ($event->prize_date<date('Y-m-d')){
                 return redirect()->route('event.index')->with('success','抽奖失败,因为还没有到开奖时间');
             }
