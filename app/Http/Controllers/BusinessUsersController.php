@@ -119,12 +119,16 @@ class BusinessUsersController extends Controller
             'email.email'=>'邮箱格式错误',
             'email.unique'=>'邮箱已经存在',
         ]);
-        $businessuser->update([
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'category_id'=>$request->category_id,
-            'status'=>$request->status,
-        ]);
+        DB::transaction(function ()use($businessuser,$request) {
+            DB::update('update business_details set shop_name=? where id=?',[$request->name,$businessuser->user_id]);
+            $businessuser->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'category_id' => $request->category_id,
+                'status' => $request->status,
+            ]);
+        });
+
         session()->flash('success','修改成功');
         return redirect()->route('businessusers.index');
     }
