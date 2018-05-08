@@ -13,7 +13,7 @@
             <div id="filePicker">店铺LOGO</div>
         </div>
         <div>
-            <img src="" id="img" alt="" width="">
+            <img src="" id="img" alt="" width="100px">
         </div>
         <input type="hidden" name="cover" value="" id="hidden">
         {{csrf_field()}}

@@ -23,7 +23,7 @@
             <tr data-id="{{$BusinessCategory->id}}" id="article">
                 <td>{{$BusinessCategory->id}}</td>
                 <td>{{$BusinessCategory->name}}</td>
-                <td><img src="{{$BusinessCategory->cover}}" alt="" class="img-rounded"></td>
+                <td><img src="{{$BusinessCategory->cover}}" alt="" class="img-rounded" width="100px"></td>
                 <td>
                         <a href="{{route('businesscategory.edit',$BusinessCategory->id)}}" class="btn btn-danger">编辑</a>
                         <a href="" class="btn btn-default">删除</a>

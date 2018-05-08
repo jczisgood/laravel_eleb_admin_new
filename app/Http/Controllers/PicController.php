@@ -18,12 +18,12 @@ class PicController extends Controller
     public function create(Request $request)
     {
         $img_pa=$request->file('file')->store('public/date'.date('md'));
-        $img_path = $this->thumb($img_pa,100,100);
+//        $img_path = $this->thumb($img_pa,100,100);
         try{
             $client = App::make('aliyun-oss');
-            $client->uploadFile(getenv('OSS_BUCKET'),$img_path,Storage_path('App/'.$img_path));
+            $client->uploadFile(getenv('OSS_BUCKET'),$img_pa,Storage_path('App/'.$img_pa));
 //                echo 1;
-            $cover= 'https://laravel-shop-1.oss-cn-beijing.aliyuncs.com/'.$img_path;
+            $cover= 'https://laravel-shop-1.oss-cn-beijing.aliyuncs.com/'.$img_pa;
 //                die();
         }catch (OssException $exception){
             dump($exception->getMessage());

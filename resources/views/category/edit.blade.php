@@ -9,7 +9,7 @@
         </div>
         <div class="form-group">
             <label for="exampleInputPassword1">原图片</label>
-            <img src="{{$businesscategory->cover}}" class="img-rounded">
+            <img src="{{$businesscategory->cover}}" class="img-rounded" width="100px">
         </div>
         <div id="uploader-demo">
             <!--用来存放item-->

@@ -15,7 +15,7 @@
                         <div id="filePicker">店铺LOGO</div>
                     </div>
                     <div>
-                        <img src="" id="img" alt="">
+                        <img src="" id="img" alt="" width="100px">
                     </div>
                     <input type="hidden" name="shop_img" value="" id="hidden">
                     {{--                    店铺评分:<input class="form-control" type="text" name="shop_rating" value="{{$businessd->shop_rating}}" placeholder="店铺评分"><br>--}}
