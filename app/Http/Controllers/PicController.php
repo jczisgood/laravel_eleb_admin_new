@@ -9,12 +9,7 @@ use OSS\Core\OssException;
 class PicController extends Controller
 {
     //
-    public function __construct()
-    {
-        $this->middleware('auth',[
-        ]);
-    }
-    //
+    // /www/wwwroot/admin_eleb/vendor/intervention/image/src/Intervention/Image/AbstractDecoder.php on line 345
     public function create(Request $request)
     {
         $img_pa=$request->file('file')->store('public/date'.date('md'));

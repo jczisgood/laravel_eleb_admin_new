@@ -60,7 +60,10 @@ class EventController extends Controller
 
     public function show(Event $event)
     {
-        return view('event.show',compact('event'));
+        $contents= view('event.show',compact('event'));
+        $res=$contents->render();
+        file_put_contents($event->id.'event_show.html',$res);
+
     }
 
     public function edit(Event $event)
